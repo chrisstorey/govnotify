@@ -1,7 +1,16 @@
 from notifications_python_client import NotificationsAPIClient
+import yaml
 
-def parse_response(response):
-    for i in range(len(response['notifications'])):
+with open("config.yml", "r") as ymlfile:
+    cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
+APIKEY = cfg["api_key"]
+
+notifications_client = NotificationsAPIClient(APIKEY)
+
+response = notifications_client.get_all_notifications(status='permanent-failure')
+
+
+for i in range(len(response['notifications'])):
         originalEmailAddress = response['notifications'][i]['email_address']
         print(originalEmailAddress)
         subject = response['notifications'][i]['subject']
@@ -43,16 +52,11 @@ def parse_response(response):
         print(vacancyLocationPostcode)
         sentAtTime = response['notifications'][i]['sent_at']
         print(sentAtTime)
-    return
 
 
 
-notifications_client = NotificationsAPIClient(
-    'download_access-53be32cd-69c1-4a72-a2e8-46ad8f768c61-6af6757f-15e6-4f1b-839f-82b146c382b4')
+
+
 
 #notifications_client = NotificationsAPIClient('test-592e9258-8b62-47a9-bd21-72aa1f22219a-b0e1e234-80d7-455c-a07d-3ed6c9aceff1')
 
-response = notifications_client.get_all_notifications(status='permanent-failure')
-print(len(response['notifications']))
-
-parse_response(response)
