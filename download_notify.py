@@ -1,15 +1,16 @@
 from notifications_python_client import NotificationsAPIClient
 import yaml
 
+# Get config data
 with open("config.yml", "r") as ymlfile:
     cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
 APIKEY = cfg["api_key"]
 
+# Setup notify client and get failures
 notifications_client = NotificationsAPIClient(APIKEY)
-
 response = notifications_client.get_all_notifications(status='permanent-failure')
 
-
+# Parse data to isolate details from body and subject lines
 for i in range(len(response['notifications'])):
         originalEmailAddress = response['notifications'][i]['email_address']
         print(originalEmailAddress)
@@ -58,5 +59,5 @@ for i in range(len(response['notifications'])):
 
 
 
-#notifications_client = NotificationsAPIClient('test-592e9258-8b62-47a9-bd21-72aa1f22219a-b0e1e234-80d7-455c-a07d-3ed6c9aceff1')
+#notifications_client = NotificationsAPIClient('')
 
