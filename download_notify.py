@@ -14,8 +14,8 @@ response = notifications_client.get_all_notifications(status='permanent-failure'
 # open file and write csv column names
 with open("downloaded.csv", "w", newline='') as csvfilewriter:
     notification_writer = csv.writer(csvfilewriter, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    notification_writer.writerow(["originalEmailAddress",
-                                  "appId",
+    notification_writer.writerow(["email address",
+                                  "applicationID",
                                   "claimantName",
                                   "vacancyTitle",
                                   "vacancyHolderName",
