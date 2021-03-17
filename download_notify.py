@@ -9,7 +9,7 @@ APIKEY = cfg["api_key"]
 
 # Setup notify client and get failures
 notifications_client = NotificationsAPIClient(APIKEY)
-response = notifications_client.get_all_notifications(status='permanent-failure')
+response = notifications_client.get_all_notifications(status='failed')
 
 # open file and write csv column names
 with open("downloaded.csv", "w", newline='') as csvfilewriter:
@@ -23,7 +23,7 @@ with open("downloaded.csv", "w", newline='') as csvfilewriter:
                                   "employerJobReference",
                                   "vacancyLocationCity",
                                   "vacancyLocationPostcode",
-                                  "sentAtTime"])
+                                  "sentAtTime", "status"])
 
     # Parse data to isolate details from body and subject lines
     for i in range(len(response['notifications'])):
@@ -79,6 +79,6 @@ with open("downloaded.csv", "w", newline='') as csvfilewriter:
                                           employerJobReference,
                                           vacancyLocationCity,
                                           vacancyLocationPostcode,
-                                          sentAtTime])
+                                          sentAtTime, response['notifications'][i]['status']])
     csvfilewriter.close()
 
