@@ -3,12 +3,11 @@ import yaml
 import csv
 from tqdm import tqdm
 
-
 # Get config data
 with open("config.yml", "r") as ymlfile:
     cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
 APIKEY = cfg["api_key"]
-NEW_FORMAT = cfg["new"]
+NEW_FORMAT = cfg["new_file_format"]
 DEBUG = cfg["debug"]
 TEMPLATE = cfg["template"]
 VERSION = cfg["version"]
@@ -46,7 +45,6 @@ def setup_header():
 
 
 def extract_body(body):
-
     vacancy_holder_name_start = body.find("Dear") + 5
     vacancy_holder_name_end = body.find("\r\n", vacancy_holder_name_start)
     vacancyHolderName = body[vacancy_holder_name_start:vacancy_holder_name_end]
@@ -63,10 +61,12 @@ def extract_body(body):
     vacancyLocationPostcodeEnd = body.find("\r\n", vacancyLocationPostcodeStart)
     vacancyLocationPostcode = body[vacancyLocationPostcodeStart:vacancyLocationPostcodeEnd]
 
+    return vacancyHolderName, introductionId, employerJobReference, vacancyLocationCity, vacancyLocationPostcode
 
-    return (vacancyHolderName, introductionId, employerJobReference, vacancyLocationCity, vacancyLocationPostcode)
-
-
+print("~~~~~~~~~~~~~~~~ MaTS Tool ~~~~~~~~~~~~~~~~")
+print("")
+print("Opening connection to Notify ...")
+print("")
 # open file and write csv column names
 with open("downloaded.csv", "w", newline='') as csvfilewriter:
     notification_writer = csv.writer(csvfilewriter, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -97,9 +97,6 @@ with open("downloaded.csv", "w", newline='') as csvfilewriter:
             body = response['notifications'][i]['body']
             sentAtTime = response['notifications'][i]['sent_at']
 
-
-            vacancyHolderName, introductionId, employerJobReference, vacancyLocationCity, vacancyLocationPostcode = extract_body(body)
-
         else:
             appIdStart = subject.find("ID")
             appId = subject[appIdStart + 3:appIdStart + 13]
@@ -109,10 +106,10 @@ with open("downloaded.csv", "w", newline='') as csvfilewriter:
             body = response['notifications'][i]['body']
             sentAtTime = response['notifications'][i]['sent_at']
 
-            vacancyHolderName, introductionId, employerJobReference, vacancyLocationCity, vacancyLocationPostcode = extract_body(body)
+        vacancyHolderName, introductionId, employerJobReference, vacancyLocationCity, vacancyLocationPostcode = extract_body(
+            body)
 
-
-            # write line
+        # write line
         if NEW_FORMAT:
             notification_writer.writerow([originalEmailAddress,
                                           employerName,
@@ -137,4 +134,4 @@ with open("downloaded.csv", "w", newline='') as csvfilewriter:
                                           vacancyLocationPostcode,
                                           sentAtTime, response['notifications'][i]['status']])
     csvfilewriter.close()
-print(f"File downloaded.csv created with {i+1} records")
+print(f"File downloaded.csv created with {i + 1} records")
