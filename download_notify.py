@@ -84,7 +84,7 @@ with open("downloaded.csv", "w", newline='') as csvfilewriter:
         template_ID = response['notifications'][i]['template']['id']
         templateversion = response['notifications'][i]['template']['version']
 
-        if templateversion == VERSION and template_ID == TEMPLATE:
+        if templateversion == VERSION:
 
             employerNameStart = subject.find("to")
             employerNameEnd = subject.find(",")

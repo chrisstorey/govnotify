@@ -13,3 +13,5 @@ macholib~=1.14
 pyinstaller
 notifications-python-client
 tqdm
+dnspython
+pandas
