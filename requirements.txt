@@ -9,7 +9,7 @@ setuptools
 urllib3
 PyYAML~=5.4.1
 altgraph~=0.17
-macholib~=1.14
+macholib~=1.16
 pyinstaller
 notifications-python-client
 tqdm
