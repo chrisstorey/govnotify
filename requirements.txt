@@ -3,7 +3,7 @@ chardet~=5.1.0
 docopt~=0.6.2
 idna
 pip~=23.3.0
-PyJWT~=2.5.0
+PyJWT~=2.10.1
 requests~=2.32.3
 setuptools
 urllib3
