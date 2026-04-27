@@ -4,7 +4,7 @@ docopt~=0.6.2
 idna
 pip~=23.3.0
 PyJWT~=2.5.0
-requests~=2.32.3
+requests~=2.33.1
 setuptools
 urllib3
 PyYAML~=6.0
